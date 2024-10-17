@@ -1,4 +1,4 @@
-package userspace
+package userSpace
 
 import (
 	"fmt"

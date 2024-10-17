@@ -7,7 +7,7 @@ import (
 
 	"github.com/SamMcClear/lumber-jack2/pkg/cpu"
 	"github.com/SamMcClear/lumber-jack2/pkg/network"
-	"github.com/SamMcClear/lumber-jack2/pkg/userspace"
+	"github.com/SamMcClear/lumber-jack2/pkg/userSpace"
 )
 
 func dataXC(ud *userspace.UserData) {
