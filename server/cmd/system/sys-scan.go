@@ -7,12 +7,20 @@ import (
 
 	"github.com/SamMcClear/lumber-jack2/pkg/cpu"
 	"github.com/SamMcClear/lumber-jack2/pkg/network"
+	"github.com/SamMcClear/lumber-jack2/pkg/userspace"
 )
 
+func dataXC(ud *userspace.UserData) {
+	fmt.Printf("User data Xchange: %v", ud)
+}
+
+func netReq(n *http.Request) {
+	fmt.Printf("incoming request: %v", n)
+}
+
 func main() {
-	http.HandleFunc("/api/hello", func(w http.ResponseWriter, r *http.Request) {
+	helloHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		fmt.Println(network.Itraffic(next http.HandlerFunc()))
 		cpuInfo := cpu.GetUsage()
 
 		response := map[string]string{
@@ -23,6 +31,11 @@ func main() {
 		json.NewEncoder(w).Encode(response)
 	})
 
-	fmt.Println("server running on 8080")
-	http.ListenAndServe(":8080", nil)
+	http.Handle("/api/hello", network.Itraffic(helloHandler))
+
+	fmt.Println("Server running on port 8080")
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Printf("Error starting server: %v\n", err)
+	}
 }
