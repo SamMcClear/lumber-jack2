@@ -10,7 +10,14 @@ import (
 	"github.com/SamMcClear/lumber-jack2/pkg/userSpace"
 )
 
-func dataXC(ud *userspace.UserData) {
+type UserSpaceData struct {
+	Username string
+	LogTS    string
+	IP       string
+}
+
+// dataXchange
+func dataXC(ud *userSpace.UserData) {
 	fmt.Printf("User data Xchange: %v", ud)
 }
 
@@ -19,6 +26,21 @@ func netReq(n *http.Request) {
 }
 
 func main() {
+	user := UserSpaceData{
+		Username: "Sam",
+		LogTS:    "2021-09-01T12:00:00Z",
+		IP:       "",
+	}
+
+	userData, err := userSpace.GetUserData()
+	if err != nil {
+		fmt.Printf("Error fetching user data: %v\n", err)
+		return
+	}
+
+	fmt.Print(user)
+	dataXC(userData)
+
 	helloHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		cpuInfo := cpu.GetUsage()
@@ -34,7 +56,7 @@ func main() {
 	http.Handle("/api/hello", network.Itraffic(helloHandler))
 
 	fmt.Println("Server running on port 8080")
-	err := http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
 		fmt.Printf("Error starting server: %v\n", err)
 	}

@@ -17,3 +17,9 @@ func Itraffic(next http.Handler) http.Handler {
 
 	})
 }
+
+type NetData struct {
+	BytesSent     int
+	BytesReceived int
+	Rport         int
+}

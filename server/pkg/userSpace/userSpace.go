@@ -6,6 +6,15 @@ import (
 	"runtime"
 )
 
+func GetUsername() (string, error) {
+	currentUser, err := user.Current()
+	if err != nil {
+		return "", fmt.Errorf("error getting current user: %v", err)
+	}
+
+	return currentUser.Username, nil
+}
+
 type UserData struct {
 	Username string
 	UserID   string
