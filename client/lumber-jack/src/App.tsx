@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
   const [data, setData] = useState<
@@ -14,17 +15,26 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <h1>React + Go App</h1>
-      {data
-        ? (
-          <div>
-            <p>Message: {data.message}</p>
-            <p>CPU Info: {data.cpuInfo}</p>
-            <p>User IP: {data.UserIP}</p>
+    <div className="app-container">
+      <h1 className="app-title">React + Go App</h1>
+      {data ? (
+        <div className="data-container">
+          <div className="data-card">
+            <h2>Message</h2>
+            <p>{data.message}</p>
           </div>
-        )
-        : <p>Loading...</p>}
+          <div className="data-card">
+            <h2>CPU Info</h2>
+            <p>{data.cpuInfo}</p>
+          </div>
+          <div className="data-card">
+            <h2>User IP</h2>
+            <p>{data.UserIP}</p>
+          </div>
+        </div>
+      ) : (
+        <p className="loading-text">Loading...</p>
+      )}
     </div>
   );
 }
