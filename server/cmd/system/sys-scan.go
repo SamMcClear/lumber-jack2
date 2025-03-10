@@ -32,9 +32,9 @@ func netResp(n *http.Response) {
 	fmt.Printf("outgoing response: %v\n", n)
 }
 
-func ScanIP() {
-
-	ip := remoteConnetion.getIP()
+func ScanIP(r *http.Request) {
+	ip := remoteConnection.GetIP(r)
+	fmt.Println("Client IP:", ip)
 }
 
 func main() {
@@ -53,7 +53,11 @@ func main() {
 	fmt.Println(user)
 	dataXC(userData)
 
-	//	readUserIP := network.ReadUserIP
+	// API route for IP scanning
+	http.HandleFunc("/api/ip", func(w http.ResponseWriter, r *http.Request) {
+		ScanIP(r)
+		w.Write([]byte("Check logs for IP"))
+	})
 
 	helloHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -73,7 +77,6 @@ func main() {
 	fmt.Println("Server running on port 8080")
 	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
-
 		fmt.Printf("Error starting server: %v\n", err)
 		logging.NewErrorLog().WriteLog(err)
 		return

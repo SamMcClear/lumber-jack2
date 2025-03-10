@@ -40,25 +40,22 @@ type RemoteConnection struct {
 	LocalUser string
 }
 
-func getIP(r *http.Request) string {
-	// Check if the request contains an X-Forwarded-For header (useful when behind a proxy)
+// Exported function for getting IP
+func GetIP(r *http.Request) string {
 	ip := r.Header.Get("X-Forwarded-For")
 	if ip != "" {
-		// X-Forwarded-For can contain multiple IPs, the first one is the client IP
 		ips := strings.Split(ip, ",")
 		return strings.TrimSpace(ips[0])
 	}
 
-	// Check if the request contains an X-Real-IP header (another proxy header)
 	ip = r.Header.Get("X-Real-IP")
 	if ip != "" {
 		return ip
 	}
 
-	// Get the IP from RemoteAddr (fallback)
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
-		slog.Error("Error parsing RemoteAddr:", "err", "%v")
+		slog.Error("Error parsing RemoteAddr:", "err", err)
 		return "unknown"
 	}
 
