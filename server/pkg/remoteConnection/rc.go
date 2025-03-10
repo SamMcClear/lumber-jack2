@@ -1,4 +1,4 @@
-package remoteconnection
+package remoteConnection
 
 import (
 	"fmt"

@@ -9,6 +9,7 @@ import (
 	"github.com/SamMcClear/lumber-jack2/pkg/cpu"
 	"github.com/SamMcClear/lumber-jack2/pkg/logging"
 	"github.com/SamMcClear/lumber-jack2/pkg/network"
+	"github.com/SamMcClear/lumber-jack2/pkg/remoteConnection"
 	"github.com/SamMcClear/lumber-jack2/pkg/userSpace"
 )
 
@@ -25,6 +26,15 @@ func dataXC(ud *userSpace.UserData) {
 
 func netReq(n *http.Request) {
 	fmt.Printf("incoming request: %v\n", n)
+}
+
+func netResp(n *http.Response) {
+	fmt.Printf("outgoing response: %v\n", n)
+}
+
+func ScanIP() {
+
+	ip := remoteConnetion.getIP()
 }
 
 func main() {
