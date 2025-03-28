@@ -14,30 +14,39 @@ import (
 var err error
 
 type RemoteConnection struct {
-	// The remote address of the connection
-	RemoteAddress string
-	// The local address of the connection
-	LocalAddress string
-	// The remote port of the connection
-	RemotePort int
-	// The local port of the connection
-	LocalPort int
-	// The remote host of the connection
-	RemoteHost string
-	// The local host of the connection
-	LocalHost string
-	// The remote IP address of the connection
-	RemoteIP string
-	// The local IP address of the connection
-	LocalIP string
-	// The remote protocol of the connection
+	RemoteAddress  string
+	LocalAddress   string
+	RemotePort     int
+	LocalPort      int
+	RemoteHost     string
+	LocalHost      string
+	RemoteIP       string
+	LocalIP        string
 	RemoteProtocol string
-	// The local protocol of the connection
-	LocalProtocol string
-	// The remote user of the connection
-	RemoteUser string
-	// The local user of the connection
-	LocalUser string
+	LocalProtocol  string
+	RemoteUser     string
+	LocalUser      string
+}
+
+type SSHAttempt struct {
+	ID        int    `json:"id"`
+	Timestamp string `json:"timestamp"`
+	Username  string `json:"username"`
+	SourceIP  string `json:"source_ip"`
+	Result    string `json:"result"`
+}
+
+func SSHAttemptHandler() ([]SSHAttempt, error) {
+	var sshAttempts []SSHAttempt
+
+	rcTrace, err := os.Open("sshAttempts.json")
+	if err != nil {
+		slog.Error("Error querying database:", "err", err)
+		return nil, err
+	}
+	defer rcTrace.Close()
+
+	return sshAttempts, nil
 }
 
 // Exported function for getting IP
