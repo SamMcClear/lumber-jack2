@@ -15,7 +15,7 @@ func IncomingIP(r *http.Request) string {
 	}
 	if ReqIP == "" {
 		ReqIP = r.RemoteAddr
-		fmt.Printf("User IP: %v", ReqIP)
+		fmt.Printf("User IP: %v\n", ReqIP)
 	}
 	return ReqIP
 }

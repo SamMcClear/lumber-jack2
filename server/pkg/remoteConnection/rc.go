@@ -10,9 +10,6 @@ import (
 )
 
 // RemoteConnection is a struct that holds the connection information
-
-var err error
-
 type RemoteConnection struct {
 	RemoteAddress  string
 	LocalAddress   string
