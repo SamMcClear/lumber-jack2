@@ -4,3 +4,10 @@
 node_modules
 dist
 todo.md
+./server/cmd/build.errors
+./server/cmd/system/error.log
+./server/cmd/build.errors
+./client/build.errors
+build
+Makefile
+build.pids

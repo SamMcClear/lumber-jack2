@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+type Tab = "home" | "network" | "cpu" | "storage" | "user";
+
 function App() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState<Tab>("home");
 
   const fetchData = (tab: string) => {
     setLoading(true);
@@ -26,75 +28,49 @@ function App() {
   };
 
   useEffect(() => {
-    fetchData(activeTab); // Fetch data for the active tab
+    fetchData(activeTab);
   }, [activeTab]);
 
   const renderContent = () => {
     if (loading) {
-      return <p className="loading-text">Retrieving data<span className="dots">...</span></p>;
+      return (
+        <p className="loading-text">
+          Retrieving data<span className="dots">...</span>
+        </p>
+      );
     }
 
-    switch (activeTab) {
-      case "home":
-        return (
-          <div className="data-container">
-            <div className="data-card">
-              <h2>Message</h2>
-              <p>{data?.message || "Welcome to LumberJack!"}</p>
-            </div>
-            <div className="data-card">
-              <h2>CPU Info</h2>
-              <p>{data?.cpuInfo || "No data available"}</p>
-            </div>
-            <div className="data-card">
-              <h2>User IP</h2>
-              <p>{data?.UserIP || "No data available"}</p>
-            </div>
-            <div className="data-card">
-              <h2>User Info</h2>
-              <p>{data?.userInfo || "No data available"}</p>
-            </div>
+    const cards: Record<Tab, { title: string; content?: string; key: string }[]> = {
+      home: [
+        { title: "Message", content: data?.message || "Welcome to LumberJack!", key: "message" },
+        { title: "CPU Info", content: data?.cpuInfo, key: "cpu" },
+        { title: "User IP", content: data?.UserIP, key: "ip" },
+        { title: "User Info", content: data?.userInfo, key: "user" },
+      ],
+      network: [
+        { title: "Network Usage", content: data?.networkUsage, key: "network" },
+      ],
+      cpu: [
+        { title: "CPU Analytics", content: data?.cpuInfo, key: "cpu" },
+      ],
+      storage: [
+        { title: "Storage Analytics", content: data?.storageInfo, key: "storage" },
+      ],
+      user: [
+        { title: "User and Server Info", content: data?.userInfo, key: "userInfo" },
+      ],
+    };
+
+    return (
+      <div className="data-container">
+        {cards[activeTab].map(({ title, content, key }) => (
+          <div key={key} className="data-card">
+            <h2>{title}</h2>
+            <p>{content || "No data available"}</p>
           </div>
-        );
-      case "network":
-        return (
-          <div className="data-container">
-            <div className="data-card">
-              <h2>Network Usage</h2>
-              <p>{data?.networkUsage || "No data available"}</p>
-            </div>
-          </div>
-        );
-      case "cpu":
-        return (
-          <div className="data-container">
-            <div className="data-card">
-              <h2>CPU Analytics</h2>
-              <p>{data?.cpuInfo || "No data available"}</p>
-            </div>
-          </div>
-        );
-      case "storage":
-        return (
-          <div className="data-container">
-            <div className="data-card">
-              <h2>Storage Analytics</h2>
-              <p>{data?.storageInfo || "No data available"}</p>
-            </div>
-          </div>
-        );
-      case "user":
-        return (
-          <div className="data-container">
-            <div className="data-card">
-              <h2>User and Server Info</h2>
-              <p>{data?.userInfo || "No data available"}</p>
-            </div>
-          </div>
-        );
-      default:
-        return <p>Welcome to the Dashboard</p>;
-    }
+        ))}
+      </div>
+    );
   };
 
   return (
